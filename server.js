@@ -1,58 +1,48 @@
 const express = require("express");
 const path = require("path");
-const ejs = require("ejs");
-
 const projectData = require("./modules/projects");
 
 const app = express();
-const PORT = process.env.PORT || 8080;
 
-// View Engine Setup
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
-// Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
-// ROUTES
+// Home
 app.get("/", (req, res) => {
   res.render("home", { title: "Climate Solutions" });
 });
 
+// About
 app.get("/about", (req, res) => {
-  res.render("about", { title: "About" });
+  res.render("about", { title: "About Us" });
 });
 
-app.get("/solutions/projects", (req, res) => {
-  const projects = projectData.getAllProjects();
-  res.render("projects", { title: "All Sectors Projects", projects });
-});
-
-app.get("/solutions/projects/:id", (req, res) => {
-  const project = projectData.getProjectById(req.params.id);
-  if (project) {
-    res.render("project", { title: project.name, project });
-  } else {
-    res.status(404).render("404", { title: "Project Not Found" });
+// Projects list
+app.get("/solutions/projects", async (req, res) => {
+  try {
+    const projects = await projectData.getAllProjects();
+    res.render("projects", { title: "All Projects", projects });
+  } catch (err) {
+    console.error("Error in /solutions/projects:", err);
+    res.status(500).render("404", { message: err, title: "Error" });
   }
 });
 
-app.get("/solutions/sector/:sector", (req, res) => {
-  const sectorProjects = projectData.getProjectsBySector(req.params.sector);
-  res.render("projects", {
-    title: `${req.params.sector} Projects`,
-    projects: sectorProjects,
-  });
-});
-
-// 404 Page
+// Unknown route
 app.use((req, res) => {
-  res.status(404).render("404", { title: "Page Not Found" });
+  res.status(404).render("404", { message: "Page Not Found", title: "404" });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// ✅ Proper startup order
+const PORT = process.env.PORT || 8080;
 
-module.exports = app;
+(async function start() {
+  try {
+    await projectData.initialize();
+    console.log("✅ Data loaded successfully!");
+    app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+  } catch (err) {
+    console.error("❌ Failed to initialize data:", err);
+  }
+})();

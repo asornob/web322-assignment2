@@ -1,62 +1,86 @@
 [
   {
     "id": 1,
-    "name": "Solar Power Expansion",
     "sector": "Electricity",
-    "description": "Large-scale solar farms providing renewable energy to local grids."
+    "name": "Solar Power Expansion",
+    "description": "A large-scale solar farm supplying renewable electricity to the city grid.",
+    "location": "Alberta, Canada"
   },
   {
     "id": 2,
-    "name": "Wind Turbine Offshore Project",
     "sector": "Electricity",
-    "description": "Offshore wind turbines generating clean electricity for coastal areas."
+    "name": "Community Wind Energy",
+    "description": "Installation of community-owned wind turbines for rural electrification.",
+    "location": "Saskatchewan, Canada"
   },
   {
     "id": 3,
-    "name": "EV Public Transportation",
     "sector": "Transportation",
-    "description": "Electric bus fleet replacing diesel vehicles in urban centers."
+    "name": "EV Charging Network",
+    "description": "Development of fast-charging stations across major highways.",
+    "location": "Ontario, Canada"
   },
   {
     "id": 4,
-    "name": "High-Speed Rail Initiative",
     "sector": "Transportation",
-    "description": "Developing high-speed train networks to reduce air travel emissions."
+    "name": "Electric Bus Fleet",
+    "description": "Transition of public buses from diesel to electric operation.",
+    "location": "Vancouver, Canada"
   },
   {
     "id": 5,
-    "name": "Smart Farming Solutions",
-    "sector": "Food, Agriculture, and Land Use",
-    "description": "Using IoT sensors and AI to improve water use and crop yield."
+    "sector": "Industry",
+    "name": "Carbon Capture Facility",
+    "description": "New carbon capture system to reduce industrial CO2 emissions by 90%.",
+    "location": "Edmonton, Canada"
   },
   {
     "id": 6,
-    "name": "Urban Tree Plantation Drive",
-    "sector": "Land Sinks",
-    "description": "City-wide program to plant native trees and restore green cover."
+    "sector": "Industry",
+    "name": "Green Steel Plant",
+    "description": "Steel production using hydrogen instead of coal to lower carbon footprint.",
+    "location": "Hamilton, Canada"
   },
   {
     "id": 7,
-    "name": "Carbon-Neutral Cement Plant",
-    "sector": "Industry",
-    "description": "Adopting carbon capture technology to reduce industrial CO2 output."
+    "sector": "Buildings",
+    "name": "Net-Zero Housing Project",
+    "description": "Residential community powered entirely by renewable energy sources.",
+    "location": "Calgary, Canada"
   },
   {
     "id": 8,
-    "name": "Building Energy Retrofits",
     "sector": "Buildings",
-    "description": "Upgrading insulation and HVAC systems to reduce building emissions."
+    "name": "Smart Energy Retrofit Program",
+    "description": "Upgrading old buildings with energy-efficient lighting and HVAC systems.",
+    "location": "Toronto, Canada"
   },
   {
     "id": 9,
-    "name": "Sustainable Aviation Fuel Research",
-    "sector": "Industry",
-    "description": "Developing low-carbon fuel alternatives for aviation."
+    "sector": "Agriculture",
+    "name": "Precision Farming Initiative",
+    "description": "Using satellite and IoT sensors to optimize fertilizer and water use.",
+    "location": "Manitoba, Canada"
   },
   {
     "id": 10,
-    "name": "Community Wind Energy",
-    "sector": "Electricity",
-    "description": "Small-scale wind turbines owned and managed by local communities."
+    "sector": "Agriculture",
+    "name": "Organic Composting Facility",
+    "description": "New composting site processing 500 tons of waste per month.",
+    "location": "Nova Scotia, Canada"
+  },
+  {
+    "id": 11,
+    "sector": "Land Sinks",
+    "name": "Urban Forest Project",
+    "description": "Tree planting program across the city to absorb carbon and improve air quality.",
+    "location": "Ottawa, Canada"
+  },
+  {
+    "id": 12,
+    "sector": "Land Sinks",
+    "name": "Wetland Restoration Program",
+    "description": "Restoring 2,000 hectares of wetland to promote biodiversity and carbon storage.",
+    "location": "New Brunswick, Canada"
   }
 ]
