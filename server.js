@@ -1,82 +1,58 @@
-/********************************************************************************
-*  WEB322 – Assignment 02
-*
-*  I declare that this assignment is my own work in accordance with Seneca's
-*  Academic Integrity Policy.
-*
-*  Name: Al Sad Ornob
-*  Student ID: 130207236
-*  Date: October 28, 2025
-*  Published URL: https://web322-assignment2-omega.vercel.app
-********************************************************************************/
-
 const express = require("express");
 const path = require("path");
+const ejs = require("ejs");
+
+const projectData = require("./modules/projects");
+
 const app = express();
-const projectData = require("./modules/projects.js");
+const PORT = process.env.PORT || 8080;
 
-// set EJS as view engine
+// View Engine Setup
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-// serve static files
+// Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
-// initialize data
-projectData
-  .initialize()
-  .then(() => {
-    console.log("✅ Data initialized successfully!");
-  })
-  .catch((err) => {
-    console.error("❌ Error initializing data:", err);
-  });
-
-// ================= ROUTES ================= //
-
-// Home
+// ROUTES
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", { title: "Climate Solutions" });
 });
 
-// About
 app.get("/about", (req, res) => {
-  res.render("about");
+  res.render("about", { title: "About" });
 });
 
-// All or filtered projects
-app.get("/solutions/projects", async (req, res) => {
-  try {
-    if (req.query.sector) {
-      const list = await projectData.getProjectsBySector(req.query.sector);
-      if (!list.length)
-        return res
-          .status(404)
-          .render("404", { message: "No projects found for that sector" });
-      res.render("projects", { projects: list, sector: req.query.sector });
-    } else {
-      const all = await projectData.getAllProjects();
-      res.render("projects", { projects: all, sector: "All Sectors" });
-    }
-  } catch (err) {
-    res.status(404).render("404", { message: "Error loading projects" });
+app.get("/solutions/projects", (req, res) => {
+  const projects = projectData.getAllProjects();
+  res.render("projects", { title: "All Sectors Projects", projects });
+});
+
+app.get("/solutions/projects/:id", (req, res) => {
+  const project = projectData.getProjectById(req.params.id);
+  if (project) {
+    res.render("project", { title: project.name, project });
+  } else {
+    res.status(404).render("404", { title: "Project Not Found" });
   }
 });
 
-// Single project
-app.get("/solutions/projects/:id", async (req, res) => {
-  try {
-    const p = await projectData.getProjectById(req.params.id);
-    res.render("project", { project: p });
-  } catch (err) {
-    res.status(404).render("404", { message: "Project not found" });
-  }
+app.get("/solutions/sector/:sector", (req, res) => {
+  const sectorProjects = projectData.getProjectsBySector(req.params.sector);
+  res.render("projects", {
+    title: `${req.params.sector} Projects`,
+    projects: sectorProjects,
+  });
 });
 
-// 404 page
+// 404 Page
 app.use((req, res) => {
-  res.status(404).render("404", { message: "Page not found" });
+  res.status(404).render("404", { title: "Page Not Found" });
 });
 
-// ================= SERVER START ================= //
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+module.exports = app;

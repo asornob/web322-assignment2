@@ -1,41 +1,41 @@
 const fs = require("fs");
 const path = require("path");
 
-function getAllProjects() {
-  try {
-    const filePath = path.resolve("./data/sectorData.json"); // ✅ works on Vercel + local
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data);
-  } catch (err) {
-    console.error("Error reading sectorData.json:", err);
-    return [];
-  }
+let projects = [];
+
+// ✅ Correct file path for Vercel and local both
+const filePath = path.resolve(__dirname, "../data/sectorData.json");
+
+// initialize data from JSON
+function initialize() {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) reject("Unable to load data file!");
+      else {
+        projects = JSON.parse(data);
+        resolve();
+      }
+    });
+  });
 }
 
+// get all projects
+function getAllProjects() {
+  return new Promise((resolve, reject) => {
+    if (projects.length > 0) resolve(projects);
+    else reject("No projects found!");
+  });
+}
+
+// get projects by sector
 function getProjectsBySector(sector) {
-  try {
-    const projects = getAllProjects();
-    return projects.filter(
+  return new Promise((resolve, reject) => {
+    const filtered = projects.filter(
       (proj) => proj.sector.toLowerCase() === sector.toLowerCase()
     );
-  } catch (err) {
-    console.error("Error filtering projects by sector:", err);
-    return [];
-  }
+    if (filtered.length > 0) resolve(filtered);
+    else reject("No projects found in that sector!");
+  });
 }
 
-function getProjectById(id) {
-  try {
-    const projects = getAllProjects();
-    return projects.find((proj) => proj.id == id);
-  } catch (err) {
-    console.error("Error getting project by ID:", err);
-    return null;
-  }
-}
-
-module.exports = {
-  getAllProjects,
-  getProjectsBySector,
-  getProjectById,
-};
+module.exports = { initialize, getAllProjects, getProjectsBySector };
