@@ -1,57 +1,40 @@
 const fs = require("fs");
 const path = require("path");
 
-let projects = [];
-
-// Initialize data from JSON
-function initialize() {
-  return new Promise((resolve, reject) => {
-    const filePath = path.join(__dirname, "../data/sectorData.json");
-    fs.readFile(filePath, "utf8", (err, data) => {
-      if (err) {
-        reject("Unable to load sector data file");
-        return;
-      }
-      try {
-        projects = JSON.parse(data);
-        resolve();
-      } catch (parseErr) {
-        reject("Error parsing JSON data");
-      }
-    });
-  });
-}
-
-// Get all projects
 function getAllProjects() {
-  return new Promise((resolve, reject) => {
-    if (projects.length > 0) resolve(projects);
-    else reject("No projects available");
-  });
+  try {
+    const filePath = path.resolve("./data/sectorData.json"); // ✅ works on Vercel + local
+    const data = fs.readFileSync(filePath, "utf-8");
+    return JSON.parse(data);
+  } catch (err) {
+    console.error("Error reading sectorData.json:", err);
+    return [];
+  }
 }
 
-// Get projects by sector
 function getProjectsBySector(sector) {
-  return new Promise((resolve, reject) => {
-    const filtered = projects.filter(
+  try {
+    const projects = getAllProjects();
+    return projects.filter(
       (proj) => proj.sector.toLowerCase() === sector.toLowerCase()
     );
-    if (filtered.length > 0) resolve(filtered);
-    else reject("No projects found in that sector");
-  });
+  } catch (err) {
+    console.error("Error filtering projects by sector:", err);
+    return [];
+  }
 }
 
-// Get project by ID
 function getProjectById(id) {
-  return new Promise((resolve, reject) => {
-    const found = projects.find((proj) => proj.id == id);
-    if (found) resolve(found);
-    else reject("Project not found");
-  });
+  try {
+    const projects = getAllProjects();
+    return projects.find((proj) => proj.id == id);
+  } catch (err) {
+    console.error("Error getting project by ID:", err);
+    return null;
+  }
 }
 
 module.exports = {
-  initialize,
   getAllProjects,
   getProjectsBySector,
   getProjectById,
