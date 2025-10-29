@@ -1,22 +1,62 @@
 [
   {
     "id": 1,
-    "sector_name": "Land Sinks"
+    "name": "Solar Power Expansion",
+    "sector": "Electricity",
+    "description": "Large-scale solar farms providing renewable energy to local grids."
   },
   {
     "id": 2,
-    "sector_name": "Industry"
+    "name": "Wind Turbine Offshore Project",
+    "sector": "Electricity",
+    "description": "Offshore wind turbines generating clean electricity for coastal areas."
   },
   {
     "id": 3,
-    "sector_name": "Transportation"
+    "name": "EV Public Transportation",
+    "sector": "Transportation",
+    "description": "Electric bus fleet replacing diesel vehicles in urban centers."
   },
   {
     "id": 4,
-    "sector_name": "Electricity"
+    "name": "High-Speed Rail Initiative",
+    "sector": "Transportation",
+    "description": "Developing high-speed train networks to reduce air travel emissions."
   },
   {
     "id": 5,
-    "sector_name": "Food, Agriculture, and Land Use"
+    "name": "Smart Farming Solutions",
+    "sector": "Food, Agriculture, and Land Use",
+    "description": "Using IoT sensors and AI to improve water use and crop yield."
+  },
+  {
+    "id": 6,
+    "name": "Urban Tree Plantation Drive",
+    "sector": "Land Sinks",
+    "description": "City-wide program to plant native trees and restore green cover."
+  },
+  {
+    "id": 7,
+    "name": "Carbon-Neutral Cement Plant",
+    "sector": "Industry",
+    "description": "Adopting carbon capture technology to reduce industrial CO2 output."
+  },
+  {
+    "id": 8,
+    "name": "Building Energy Retrofits",
+    "sector": "Buildings",
+    "description": "Upgrading insulation and HVAC systems to reduce building emissions."
+  },
+  {
+    "id": 9,
+    "name": "Sustainable Aviation Fuel Research",
+    "sector": "Industry",
+    "description": "Developing low-carbon fuel alternatives for aviation."
+  },
+  {
+    "id": 10,
+    "name": "Community Wind Energy",
+    "sector": "Electricity",
+    "description": "Small-scale wind turbines owned and managed by local communities."
   }
 ]
