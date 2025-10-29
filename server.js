@@ -7,20 +7,29 @@
 *  Name: Al Sad Ornob
 *  Student ID: 130207236
 *  Date: October 28, 2025
-*  Published URL: (add your vercel link after deployment)
+*  Published URL: https://web322-assignment2-omega.vercel.app
 ********************************************************************************/
 
 const express = require("express");
 const path = require("path");
 const app = express();
-
 const projectData = require("./modules/projects.js");
 
-// set EJS view engine
+// set EJS as view engine
 app.set("view engine", "ejs");
 
-// static files
-app.use(express.static("public"));
+// serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// initialize data
+projectData
+  .initialize()
+  .then(() => {
+    console.log("✅ Data initialized successfully!");
+  })
+  .catch((err) => {
+    console.error("❌ Error initializing data:", err);
+  });
 
 // ================= ROUTES ================= //
 
@@ -70,14 +79,4 @@ app.use((req, res) => {
 
 // ================= SERVER START ================= //
 const PORT = process.env.PORT || 8080;
-
-projectData
-  .initialize()
-  .then(() => {
-    app.listen(PORT, () =>
-      console.log(`Server running at http://localhost:${PORT}`)
-    );
-  })
-  .catch((err) => {
-    console.log("Failed to start server:", err);
-  });
+app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));

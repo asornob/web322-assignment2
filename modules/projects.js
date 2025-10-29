@@ -1,63 +1,58 @@
-const projectData = require("../data/projectData.json");
-const sectorData = require("../data/sectorData.json");
+const fs = require("fs");
+const path = require("path");
 
 let projects = [];
 
-// Initialize the projects array
+// Initialize data from JSON
 function initialize() {
-    return new Promise((resolve, reject) => {
-        try {
-            projects = [];
-            projectData.forEach(proj => {
-                const sectorObj = sectorData.find(sec => sec.id === proj.sector_id);
-                projects.push({
-                    ...proj,
-                    sector: sectorObj ? sectorObj.sector_name : "Unknown"
-                });
-            });
-            resolve();
-        } catch (err) {
-            reject("Unable to initialize projects: " + err);
-        }
+  return new Promise((resolve, reject) => {
+    const filePath = path.join(__dirname, "../data/sectorData.json");
+    fs.readFile(filePath, "utf8", (err, data) => {
+      if (err) {
+        reject("Unable to load sector data file");
+        return;
+      }
+      try {
+        projects = JSON.parse(data);
+        resolve();
+      } catch (parseErr) {
+        reject("Error parsing JSON data");
+      }
     });
+  });
 }
 
-// Return all projects
+// Get all projects
 function getAllProjects() {
-    return new Promise((resolve, reject) => {
-        if (projects.length > 0) {
-            resolve(projects);
-        } else {
-            reject("No projects found");
-        }
-    });
+  return new Promise((resolve, reject) => {
+    if (projects.length > 0) resolve(projects);
+    else reject("No projects available");
+  });
 }
 
-// Return project by ID
-function getProjectById(projectId) {
-    return new Promise((resolve, reject) => {
-        const proj = projects.find(p => p.id === projectId);
-        if (proj) {
-            resolve(proj);
-        } else {
-            reject(`Project with ID ${projectId} not found`);
-        }
-    });
-}
-
-// Return projects by sector (case-insensitive, partial match)
+// Get projects by sector
 function getProjectsBySector(sector) {
-    return new Promise((resolve, reject) => {
-        const lowerSector = sector.toLowerCase();
-        const filtered = projects.filter(p => 
-            p.sector.toLowerCase().includes(lowerSector)
-        );
-        if (filtered.length > 0) {
-            resolve(filtered);
-        } else {
-            reject(`No projects found for sector: ${sector}`);
-        }
-    });
+  return new Promise((resolve, reject) => {
+    const filtered = projects.filter(
+      (proj) => proj.sector.toLowerCase() === sector.toLowerCase()
+    );
+    if (filtered.length > 0) resolve(filtered);
+    else reject("No projects found in that sector");
+  });
 }
 
-module.exports = { initialize, getAllProjects, getProjectById, getProjectsBySector };
+// Get project by ID
+function getProjectById(id) {
+  return new Promise((resolve, reject) => {
+    const found = projects.find((proj) => proj.id == id);
+    if (found) resolve(found);
+    else reject("Project not found");
+  });
+}
+
+module.exports = {
+  initialize,
+  getAllProjects,
+  getProjectsBySector,
+  getProjectById,
+};
