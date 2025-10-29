@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= sector %> Projects - Climate Solutions</title>
+    <link href="/css/main.css" rel="stylesheet" />
+  </head>
+
+  <body class="bg-white text-gray-800">
+    <%- include('partials/navbar') %>
+
+    <section class="text-center mt-10">
+      <h1 class="text-3xl font-bold mb-4"><%= sector %> Projects</h1>
+
+      <% if (projects && projects.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-10 mb-10">
+          <% projects.forEach(proj => { %>
+            <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+              <h2 class="text-xl font-semibold text-gray-800 mb-2"><%= proj.name %></h2>
+              <p class="text-gray-600 mb-3"><%= proj.description %></p>
+              <p class="text-sm text-gray-500 mb-3">Sector: <span class="font-medium"><%= proj.sector %></span></p>
+              <a href="/solutions/projects/<%= proj.id %>" class="btn btn-outline btn-sm text-blue-600 hover:text-blue-800 hover:underline">
+                View Details
+              </a>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-gray-500 mt-6">No projects found for this sector.</p>
+      <% } %>
+
+      <a href="/" class="text-blue-700 underline hover:text-blue-900 mt-6 inline-block">
+        Back to Home
+      </a>
+    </section>
+  </body>
+</html>
