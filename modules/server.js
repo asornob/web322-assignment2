@@ -3,40 +3,33 @@ const path = require("path");
 const projectData = require("./modules/projects");
 
 const app = express();
-const HTTP_PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
-// set view engine
+// setup view engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// static files
+// static folder
 app.use(express.static(path.join(__dirname, "public")));
 
 // routes
 app.get("/", (req, res) => {
-  res.render("home", {
-    title: "Explore Climate Solutions",
-  });
+  res.render("home", { title: "Explore Climate Solutions" });
 });
 
 app.get("/solutions/projects", async (req, res) => {
   try {
-    let projects;
-    let sector = req.query.sector || "All";
-
-    if (req.query.sector) {
-      projects = await projectData.getProjectsBySector(req.query.sector);
-    } else {
-      projects = await projectData.getAllProjects();
-    }
+    const sector = req.query.sector || "All";
+    const projects = req.query.sector
+      ? await projectData.getProjectsBySector(req.query.sector)
+      : await projectData.getAllProjects();
 
     res.render("projects", {
-      title: "All Sectors Projects",
-      projects,
-      sector, // 👈 this fixes the undefined error
+      title: `${sector} Projects`,
+      projects: projects,
     });
   } catch (err) {
-    res.status(404).render("404", { message: err });
+    res.status(500).render("404", { message: "Error loading projects." });
   }
 });
 
@@ -49,17 +42,15 @@ app.get("/solutions/projects/:id", async (req, res) => {
   }
 });
 
-// 404 route
 app.use((req, res) => {
   res.status(404).render("404", { message: "Page Not Found" });
 });
 
-// start server
-projectData
-  .initialize()
-  .then(() => {
-    app.listen(HTTP_PORT, () =>
-      console.log(`Server running on port ${HTTP_PORT}`)
-    );
-  })
-  .catch((err) => console.log(`Error initializing data: ${err}`));
+// initialize + export for Vercel
+projectData.initialize().then(() => {
+  if (process.env.VERCEL) {
+    module.exports = app; // 🟢 for Vercel
+  } else {
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  }
+});
